@@ -2,14 +2,12 @@ from fastapi import APIRouter
 from pydantic import BaseModel
 import pandas as pd
 from joblib import load
-
-# Supondo que enums.py esteja na pasta app/models
 from app.models.enums import Sexo, FaixaEtaria, RacaCor, Grupo, EstadoCivil, Escolaridade, Cidade, Uf
 
-# Carregar o modelo treinado
-modelo = load('./model/modelo_treinado.pkl')
 
-# Definir a estrutura dos dados de entrada usando Pydantic
+modeloTreinadoRandomForest = load('./model/modelo_treinado.pkl')
+
+
 class UserInput(BaseModel):
     nome: str
     sexo: Sexo
@@ -31,15 +29,16 @@ class UserInput(BaseModel):
 router = APIRouter()
 
 @router.post("/prever/")
-async def prever_vulnerabilidade(dados: UserInput):
+async def prever_vulnerabilidade_social(dados: UserInput):
     # Converter dados de entrada para DataFrame
-    dados_usuario = pd.DataFrame([dados.dict()])
+    dados_usuario = pd.DataFrame([dados.model_dump()])
 
+    # Remover colunas desnecessárias
     dados_usuario = dados_usuario.drop(['nome', 'endereco', 'numero'], axis=1)
 
     # Fazer a previsão com o modelo
-    previsao = modelo.predict(dados_usuario)
+    previsao = modeloTreinadoRandomForest.predict(dados_usuario)
 
-    # Interpretar o resultado
-    resultado = "Vulnerável" if previsao[0] else "Não Vulnerável"
-    return {"previsao": resultado}
+    # Retornar True ou False diretamente
+    return bool(previsao[0])
+
