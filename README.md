@@ -14,7 +14,7 @@
 
 Esta API utiliza um modelo de machine learning treinado para prever se uma pessoa é socialmente vulnerável ou não, com base em dados fornecidos, como sexo, faixa etária, renda, estado civil, escolaridade, e outros fatores.
 
-Referência do projeto [Artigo Tech](https://www.youtube.com/@ArtigoTech).
+Referência do projeto [Rede Cidadã](https://www.redecidada.org.br).
 
 ## Tecnologias
  
