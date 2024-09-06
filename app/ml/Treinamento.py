@@ -6,7 +6,7 @@ import joblib
 import pandas as pd
 
 # Exemplo de dados de treinamento
-base_dados = pd.read_csv('../data/base_tratada_refinada2.csv')
+base_dados = pd.read_csv('data/base_tratada_refinada2.csv')
 
 # Separar previsores (X) e classe (y)
 X = base_dados.drop(columns=['vulnerabilidade_social'])

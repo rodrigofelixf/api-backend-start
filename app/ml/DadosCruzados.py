@@ -8,7 +8,7 @@ modelo = joblib.load('modelo_treinado.pkl')
 # Carregar o conjunto de dados (ajuste conforme necessário)
 # Aqui estamos apenas criando um DataFrame de exemplo
 # Substitua isso pelo carregamento do seu conjunto de dados real
-df = pd.read_csv('../data/base_tratada_refinada2.csv')
+df = pd.read_csv('data/base_tratada_refinada2.csv')
 
 # Dividir os dados em variáveis preditoras (X) e variável alvo (y)
 X = df.drop('vulnerabilidade_social', axis=1)  # Substitua 'target' pelo nome da coluna da variável alvo
