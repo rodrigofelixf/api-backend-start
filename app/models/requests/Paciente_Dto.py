@@ -1,8 +1,9 @@
-from pydantic.v1 import BaseModel
+from pydantic import BaseModel
+from typing import Optional
 
-
-class UserInput(BaseModel):
+class PacienteDto(BaseModel):
     nomeCompleto: str
+    email: str
     sexo: str
     faixaEtaria: str
     idade: int
@@ -18,3 +19,4 @@ class UserInput(BaseModel):
     uf: str
     cep: str
     numeroMoradores: int
+    vulneravel: bool

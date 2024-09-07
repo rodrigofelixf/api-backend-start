@@ -1,11 +1,14 @@
 from joblib import load
 import pandas as pd
 
+from app.models.requests.Paciente_Dto import PacienteDto
 
 modeloTreinadoRandomForest = load('app/ml/modelo_treinado.pkl')
 
 def prever_vulnerabilidade(dados):
+
     dados_usuario = pd.DataFrame([dados.model_dump()])
+
 
     remover_colunas_nao_treinadas(dados_usuario)
 

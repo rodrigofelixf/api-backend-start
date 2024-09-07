@@ -3,7 +3,7 @@ from pydantic import BaseModel
 from app.models.enums import Sexo, FaixaEtaria, RacaCor, Grupo, EstadoCivil, Escolaridade, Cidade, Uf
 
 
-class UserRequest(BaseModel):
+class PacienteRequest(BaseModel):
     nome: str
     sexo: Sexo
     faixa_etaria: FaixaEtaria
