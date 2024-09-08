@@ -13,6 +13,7 @@ usuario_model.Base.metadata.create_all(bind=engine)
 
 
 router = APIRouter()
+endpointUsuario = "/usuarios/"
 
 
 def get_db():
@@ -23,19 +24,19 @@ def get_db():
         db.close()
 
 
-@router.post("/usuarios/", response_model = schemas.Usuario)
+@router.post(endpointUsuario, response_model = schemas.Usuario)
 def registrar_usuario(usuario: schemas.CriarUsuario, db: Session = Depends(get_db)):
     usuario_service.validar_usuario_existe(db, usuario.cpf, usuario.email)
     return usuario_service.criar_usuario(db, usuario)
 
 
-@router.get("/usuarios/", response_model=list[schemas.Usuario])
+@router.get(endpointUsuario, response_model=list[schemas.Usuario])
 def mostrar_lista_usuarios(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
     usuarios = usuario_service.obter_todos_usuarios(db, skip, limit)
     return usuarios
 
 
-@router.get("/usuarios/{usuarioId}", response_model=schemas.Usuario)
+@router.get(endpointUsuario + "{usuarioId}", response_model=schemas.Usuario)
 def buscar_usuario_por_id(usuarioId: int, db: Session = Depends(get_db)):
     usuarioEncontrado = usuario_service.obter_usuario_por_id(db, usuarioId)
     if usuarioEncontrado is None:
@@ -43,7 +44,7 @@ def buscar_usuario_por_id(usuarioId: int, db: Session = Depends(get_db)):
     return usuarioEncontrado
 
 
-@router.get("/usuarios/buscarcpf/{usuarioCpf}", response_model=schemas.Usuario)
+@router.get(endpointUsuario + "buscarcpf/{usuarioCpf}", response_model=schemas.Usuario)
 def buscar_usuario_por_cpf(usuarioCpf: str, db: Session = Depends(get_db)):
     usuarioEncontrado = usuario_service.obter_usuario_por_cpf(db, usuarioCpf)
     if usuarioEncontrado is None:
