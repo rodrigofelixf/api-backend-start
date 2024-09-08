@@ -1,3 +1,5 @@
+from typing import Optional
+
 from fastapi import APIRouter, HTTPException
 from fastapi.params import Depends
 from sqlalchemy.orm import Session
@@ -11,6 +13,7 @@ usuario_model.Base.metadata.create_all(bind=engine)
 
 
 router = APIRouter()
+
 
 def get_db():
     db = SessionLocal()
@@ -35,6 +38,14 @@ def mostrar_lista_usuarios(skip: int = 0, limit: int = 100, db: Session = Depend
 @router.get("/usuarios/{usuarioId}", response_model=schemas.Usuario)
 def buscar_usuario_por_id(usuarioId: int, db: Session = Depends(get_db)):
     usuarioEncontrado = usuario_service.obter_usuario_por_id(db, usuarioId)
+    if usuarioEncontrado is None:
+        raise HTTPException(status_code=404, detail="Usuario não encontrado")
+    return usuarioEncontrado
+
+
+@router.get("/usuarios/buscarcpf/{usuarioCpf}", response_model=schemas.Usuario)
+def buscar_usuario_por_cpf(usuarioCpf: str, db: Session = Depends(get_db)):
+    usuarioEncontrado = usuario_service.obter_usuario_por_cpf(db, usuarioCpf)
     if usuarioEncontrado is None:
         raise HTTPException(status_code=404, detail="Usuario não encontrado")
     return usuarioEncontrado

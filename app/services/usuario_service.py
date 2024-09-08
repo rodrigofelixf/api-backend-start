@@ -3,7 +3,7 @@ from sqlalchemy.orm import Session
 
 from app.models import usuario_model
 from app.models.schemas import schemas
-from app.services.Vulnerabilidade_Service import prever_vulnerabilidade
+from app.services.vulnerabilidade_service import prever_vulnerabilidade
 
 
 def obter_usuario_por_id(db: Session, usuario_id: int):

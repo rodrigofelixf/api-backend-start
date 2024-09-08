@@ -1,11 +1,7 @@
-from fastapi.openapi.models import Schema
-from joblib import load
 import pandas as pd
+from joblib import load
 
-from app.models.requests.Paciente_Request import PacienteRequest
 from app.models.schemas import schemas
-
-from app.models.requests.Paciente_Dto import PacienteDto
 from app.utils.utils import converter_para_paciente_request
 
 modeloTreinadoRandomForest = load('app/ml/modelo_treinado.pkl')
