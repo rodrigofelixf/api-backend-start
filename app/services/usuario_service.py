@@ -10,23 +10,24 @@ def obter_usuario_por_id(db: Session, usuario_id: int):
     usuario = db.query(usuario_model.UsuarioModel).filter(usuario_model.UsuarioModel.id == usuario_id).first()
     return usuario
 
+def obter_usuario_por_nome(db: Session, usuario_nome: str):
+    usuario = db.query(usuario_model.UsuarioModel).filter(usuario_model.UsuarioModel.nomeCompleto.ilike(f"%{usuario_nome}")).first()
+    return usuario
+
+def obter_usuarios_pelo_nome(db: Session, usuario_nome: str):
+    usuario = db.query(usuario_model.UsuarioModel).filter(usuario_model.UsuarioModel.nomeCompleto.ilike(f"%{usuario_nome}")).all()
+    return usuario
+
 def obter_usuario_por_cpf(db: Session, usuario_cpf: str):
-    user = db.query(usuario_model.UsuarioModel).filter(usuario_model.UsuarioModel.cpf == usuario_cpf).first()
-    return user
+    usuario = db.query(usuario_model.UsuarioModel).filter(usuario_model.UsuarioModel.cpf == usuario_cpf).first()
+    return usuario
 
 def obter_usuario_por_email(db: Session, usuario_email: str):
-    user = db.query(usuario_model.UsuarioModel).filter(usuario_model.UsuarioModel.email == usuario_email).first()
-    return user
+    usuario = db.query(usuario_model.UsuarioModel).filter(usuario_model.UsuarioModel.email == usuario_email).first()
+    return usuario
 
 def obter_todos_usuarios(db: Session, skip: int = 0, limit: int = 100):
     return db.query(usuario_model.UsuarioModel).offset(skip).limit(limit).all()
-
-# def criar_usuario(db: Session, usuario: schemas.CriarUsuario):
-#     usuarioParaSalvar = usuario_model.UsuarioModel(**usuario.model_dump())
-#     db.add(usuarioParaSalvar)
-#     db.commit()
-#     db.refresh(usuarioParaSalvar)
-#     return usuarioParaSalvar
 
 
 def criar_usuario(db: Session, usuario: schemas.CriarUsuario):

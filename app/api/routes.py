@@ -36,12 +36,27 @@ def mostrar_lista_usuarios(skip: int = 0, limit: int = 100, db: Session = Depend
     return usuarios
 
 
+@router.get(endpointUsuario + "buscarnome/{usuarioNome}", response_model=schemas.Usuario)
+def buscar_usuario_por_nome(usuarioNome: str, db: Session = Depends(get_db)):
+    usuarioEncontrado = usuario_service.obter_usuario_por_nome(db, usuarioNome)
+    if usuarioEncontrado is None:
+        raise HTTPException(status_code=404, detail="Usuario não encontrado")
+    return usuarioEncontrado
+
+
 @router.get(endpointUsuario + "{usuarioId}", response_model=schemas.Usuario)
 def buscar_usuario_por_id(usuarioId: int, db: Session = Depends(get_db)):
     usuarioEncontrado = usuario_service.obter_usuario_por_id(db, usuarioId)
     if usuarioEncontrado is None:
         raise HTTPException(status_code=404, detail="Usuario não encontrado")
     return usuarioEncontrado
+
+@router.get(endpointUsuario + "buscarusuarios/{usuarioNome}", response_model=list[schemas.Usuario])
+def buscar_usuarios_pelo_nome(usuarioNome: str, db: Session = Depends(get_db)):
+    usuariosEncontrados = usuario_service.obter_usuarios_pelo_nome(db, usuarioNome)
+    if usuariosEncontrados is None:
+        raise HTTPException(status_code=404, detail="Usuario não encontrado")
+    return usuariosEncontrados
 
 
 @router.get(endpointUsuario + "buscarcpf/{usuarioCpf}", response_model=schemas.Usuario)
