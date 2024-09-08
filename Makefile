@@ -1,5 +1,5 @@
 start-dev:
-	uvicorn app.main: app --reload
+	uvicorn main:app --reload
 
 start:
 	uvicorn main:app
