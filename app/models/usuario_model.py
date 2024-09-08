@@ -1,8 +1,6 @@
-from numpy.ma.extras import unique
+from sqlalchemy import Column, String, Integer, Float, Boolean, Date
 
 from app.db.database import Base
-
-from sqlalchemy import Column, String, Integer, Float, Boolean, Date, false
 
 
 class UsuarioModel(Base):

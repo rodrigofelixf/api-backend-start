@@ -2,16 +2,13 @@ from pydantic import BaseModel
 from typing import Optional
 from datetime import date
 
-class UsuarioBase(BaseModel):
-    email: str
 
 
-
-class CriarUsuario(UsuarioBase):
+class CriarUsuario(BaseModel):
     nomeCompleto: str
     email: str
     cpf: str
-    dataNascimento: date
+    dataNascimento: date  # Use 'date' em vez de 'Date'
     sexo: str
     rg: Optional[str] = None
     idade: int
@@ -35,13 +32,30 @@ class CriarUsuario(UsuarioBase):
     numeroMoradores: int
     grupo: str
 
-
-class Usuario(UsuarioBase):
+class Usuario(BaseModel):
     id: int
+    nomeCompleto: str
+    email: str
     isVulneravel: bool
 
 class Config:
     orm_mode = True
 
 
-
+class VulnerabilidadeDadosTreino(BaseModel):
+    nome: str
+    sexo: str  # Alterado para str para simplificar a conversão, ajuste conforme necessidade
+    faixa_etaria: str
+    idade: int
+    raca_cor: str
+    grupo: str
+    renda: float
+    estado: str
+    escolaridade: str
+    endereco: str
+    numero: int
+    bairro: str
+    cidade: str
+    uf: str
+    cep: int
+    n_moradores: int
