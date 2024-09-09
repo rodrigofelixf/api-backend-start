@@ -58,7 +58,7 @@ $ python3 -m venv venv
 $ source venv/bin/activate
 
 #Windows
-$ env\Scripts\activate
+$ venv/bin/activate
 
 ## Deve aparecer (venv) no inicio do terminal.
 ```
