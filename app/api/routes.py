@@ -1,4 +1,5 @@
-from typing import Optional
+
+
 
 from fastapi import APIRouter, HTTPException
 from fastapi.params import Depends
@@ -28,6 +29,7 @@ def get_db():
 def registrar_usuario(usuario: schemas.CriarUsuario, db: Session = Depends(get_db)):
     usuario_service.validar_usuario_existe(db, usuario.cpf, usuario.email)
     return usuario_service.criar_usuario(db, usuario)
+
 
 
 @router.get(endpointUsuario, response_model=list[schemas.Usuario])

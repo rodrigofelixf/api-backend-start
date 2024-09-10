@@ -1,31 +1,20 @@
-import pandas as pd
-import joblib
+from functools import lru_cache
+import time
 
-# Carregar o modelo treinado (que inclui o pré-processador e o modelo)
-pipeline = joblib.load('modelo_treinado.pkl')
+@lru_cache(maxsize=100)
+def calcula_complexo(numero: int) -> int:
+    time.sleep(2)  # Simula uma operação de cálculo demorada
+    return numero * numero
 
-# Dados de entrada para previsão
-dados_entrada = pd.DataFrame([{
-    "nome": "rodrigo felix",
-    "sexo": "masculino",
-    "faixa_etaria": "0 a 19 anos",
-    "idade": 25,
-    "raca_cor": "amarela",
-    "grupo": "caminhoneiros",
-    "renda": 35000,
-    "estado": "casado",
-    "escolaridade": "curso tecnico / tecnologo",
-    "endereco": "rua d",
-    "numero": 2,
-    "bairro": "fundao",
-    "cidade": "abreu e lima",
-    "uf": "PE",
-    "cep": 52160170,
-    "n_moradores": 40
-}])
+# Função para testar o cache
+def testar_cache():
+    start_time = time.time()
+    print(calcula_complexo(4))  # Deve demorar cerca de 2 segundos na primeira chamada
+    print("Tempo decorrido (primeira chamada):", time.time() - start_time)
 
-# Fazer a previsão com o pipeline
-previsao = pipeline.predict(dados_entrada)
+    start_time = time.time()
+    print(calcula_complexo(4))  # Deve ser muito mais rápido devido ao cache
+    print("Tempo decorrido (segunda chamada):", time.time() - start_time)
 
-# Exibir o resultado
-print("Previsão:", "Vulnerável" if previsao[0] else "Não Vulnerável")
+# Execute o teste
+testar_cache()

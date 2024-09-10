@@ -6,6 +6,9 @@ from app.models.schemas import schemas
 from app.services.vulnerabilidade_service import prever_vulnerabilidade
 
 
+
+
+
 def obter_usuario_por_id(db: Session, usuario_id: int):
     usuario = db.query(usuario_model.UsuarioModel).filter(usuario_model.UsuarioModel.id == usuario_id).first()
     return usuario
@@ -25,6 +28,7 @@ def obter_usuario_por_cpf(db: Session, usuario_cpf: str):
 def obter_usuario_por_email(db: Session, usuario_email: str):
     usuario = db.query(usuario_model.UsuarioModel).filter(usuario_model.UsuarioModel.email == usuario_email).first()
     return usuario
+
 
 def obter_todos_usuarios(db: Session, skip: int = 0, limit: int = 100):
     return db.query(usuario_model.UsuarioModel).offset(skip).limit(limit).all()

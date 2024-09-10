@@ -33,7 +33,7 @@ class CriarUsuario(BaseModel):
     grupo: str
 
 class Usuario(BaseModel):
-    id: int
+    cpf: str
     nomeCompleto: str
     email: str
     isVulneravel: bool
