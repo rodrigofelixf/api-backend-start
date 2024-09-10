@@ -1,4 +1,4 @@
-# api-backend-start
+**# api-backend-start
 <h1 align="center">
   Api Backend Projeto Start+ IA
 </h1>
@@ -12,8 +12,7 @@
 
 # API de Previsão de Vulnerabilidade Social
 
-Esta API utiliza um modelo de machine learning treinado para prever se uma pessoa é socialmente vulnerável ou não, com base em dados fornecidos, como sexo, faixa etária, renda, estado civil, escolaridade, e outros fatores.
-
+Esta API utiliza machine learning para prever a vulnerabilidade social de indivíduos com base em fatores como sexo, idade, renda, estado civil, escolaridade, entre outros. O projeto foi feito para o Hackathon da Rede Cidadã.
 Referência do projeto [Rede Cidadã](https://www.redecidada.org.br).
 
 ## Tecnologias
@@ -28,10 +27,10 @@ Referência do projeto [Rede Cidadã](https://www.redecidada.org.br).
 
 ## Práticas adotadas
 
-- API REST
-- Alguns conceitos do SOLID
-- Responses / Response
-- Geração automática do Swagger
+- API RESTful
+- Conceitos do SOLID
+- Respostas padronizadas (Responses)
+- Geração automática de documentação com Swagger
 
 # Como Executar
 
@@ -104,9 +103,8 @@ Para fazer as requisições HTTP abaixo, foi utilizada a ferramenta [httpie](htt
 (Você pode usar o swagger e outros como: Insomnia, postman, etc.)
 
 - Cadastrar Usuario: 
-```
 $ endpoint -  http://127.0.0.1:8000/v1/api/usuarios/
-
+```Json
 {
   "nomeCompleto": "string",
   "email": "string",
@@ -136,7 +134,14 @@ $ endpoint -  http://127.0.0.1:8000/v1/api/usuarios/
   "grupo": "string"
 }
 ```
-### Retorno:  Ao cadastrar, o endpoint fara a previsão de vulnerabilidade e se tudo der certo retornara o Id, Nome e um Boleano 0 = nao vulneravel, 1 = vulneravel. 
+### Retorno:
 
+```JSON
+{
+  "id": 1,
+  "nome": "João da Silva",
+  "isVulneravel": false
+}
+```
 
-## - todos os dados serão minusculos para poder funcionar. Os imputs padrões esta na pasta app/models/enums.py
+- #### Todos os dados serão minusculos para poder funcionar. Os imputs padrões estão na pasta app/models/enums.py**
