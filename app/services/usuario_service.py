@@ -1,12 +1,21 @@
-from fastapi import HTTPException, status
+import logging
+
+from fastapi import HTTPException
+from redis import Redis
 from sqlalchemy.orm import Session
 
 from app.models import usuario_model
 from app.models.schemas import schemas
 from app.services.vulnerabilidade_service import prever_vulnerabilidade
 
+# Configuração do logging
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
 
 
+# Função para conectar ao Redis
+async def redis_cache():
+    return Redis(host="localhost", port=6379, db=0)
 
 
 def obter_usuario_por_id(db: Session, usuario_id: int):
@@ -30,8 +39,18 @@ def obter_usuario_por_email(db: Session, usuario_email: str):
     return usuario
 
 
-def obter_todos_usuarios(db: Session, skip: int = 0, limit: int = 100):
-    return db.query(usuario_model.UsuarioModel).offset(skip).limit(limit).all()
+
+async def obter_todos_usuarios(db: Session, skip: int = 0, limit: int = 100):
+
+    logger.info("Cache Miss: Fetching data from database SERVICE@")
+
+
+    resultado = db.query(usuario_model.UsuarioModel).offset(skip).limit(limit).all()
+
+    # Log após a consulta
+    logger.info("Data fetched from database and cached@SERVICE")
+
+    return resultado
 
 
 def criar_usuario(db: Session, usuario: schemas.CriarUsuario):

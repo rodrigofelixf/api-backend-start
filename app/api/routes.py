@@ -1,8 +1,11 @@
+import logging
+import time
 
-
-
+from fastapi_cache.decorator import cache
 from fastapi import APIRouter, HTTPException
 from fastapi.params import Depends
+from redis.asyncio import Redis
+
 from sqlalchemy.orm import Session
 
 from app.db.database import SessionLocal, engine
@@ -16,6 +19,8 @@ usuario_model.Base.metadata.create_all(bind=engine)
 router = APIRouter()
 endpointUsuario = "/usuarios/"
 
+logging.basicConfig(level=logging.INFO)
+
 
 def get_db():
     db = SessionLocal()
@@ -23,6 +28,10 @@ def get_db():
         yield db
     finally:
         db.close()
+
+
+
+
 
 
 @router.post(endpointUsuario, response_model = schemas.Usuario)
@@ -33,8 +42,11 @@ def registrar_usuario(usuario: schemas.CriarUsuario, db: Session = Depends(get_d
 
 
 @router.get(endpointUsuario, response_model=list[schemas.Usuario])
-def mostrar_lista_usuarios(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
-    usuarios = usuario_service.obter_todos_usuarios(db, skip, limit)
+@cache(expire=60)
+async def mostrar_lista_usuarios(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
+
+    usuarios = await usuario_service.obter_todos_usuarios(db, skip, limit)
+
     return usuarios
 
 
