@@ -1,5 +1,6 @@
 .consulta-pesquisa {
     display: flex;
+    width: 90%;
     justify-content: flex-start;
     margin-left: 3vw;
 }
@@ -46,7 +47,7 @@
     gap: 2vh; /* Espaçamento entre os botões */
     padding: 0 40px; /* Espaçamento lateral */
     box-sizing: border-box; /* Inclui padding e border no cálculo da largura */
-    width: 100%; /* Garante que ocupe toda a largura disponível até max-width */
+    width: 90%; /* Garante que ocupe toda a largura disponível até max-width */
 }
 
   
