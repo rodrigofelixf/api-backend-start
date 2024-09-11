@@ -2,35 +2,36 @@ from pydantic import BaseModel
 from typing import Optional
 from datetime import date
 
+from app.models.enums import Sexo, FaixaEtaria, RacaCor, Grupo, EstadoCivil, Escolaridade, Cidade
 
 
 class CriarUsuario(BaseModel):
     nomeCompleto: str
     email: str
     cpf: str
-    dataNascimento: date  # Use 'date' em vez de 'Date'
-    sexo: str
+    dataNascimento: date
+    sexo: Sexo
     rg: Optional[str] = None
     idade: int
     nomeMae: str
     telefone: Optional[str] = None
     cep: int
-    cidade: str
+    cidade: Cidade
     rua: str
     uf: str
     bairro: str
     numeroEndereco: Optional[int] = None
-    escolaridade: str
-    racaCor: str
-    faixaEtaria: str
-    estadoCivil: str
+    escolaridade: Escolaridade
+    racaCor: RacaCor
+    faixaEtaria: FaixaEtaria
+    estadoCivil: EstadoCivil
     pcd: bool
     tipoPcd: Optional[str] = None
     cursoSuperior: Optional[str] = None
     renda: float
     emprego: Optional[str] = None
     numeroMoradores: int
-    grupo: str
+    grupo: Grupo
 
 class Usuario(BaseModel):
     cpf: str
