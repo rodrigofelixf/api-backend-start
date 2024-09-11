@@ -23,11 +23,13 @@ Referência do projeto [Rede Cidadã](https://www.redecidada.org.br).
 - [Swagger](https://swagger.io/docs/)
 - [Docker](https://docs.docker.com/get-started/get-docker/)
 - [PostgreSql](https://www.postgresql.org/download/)
+- [Redis Db](https://redis.io/docs/latest/)
 
 
 ## Práticas adotadas
 
 - API RESTful
+- Cacheamento com Redis + FastApi
 - Conceitos do SOLID
 - Respostas padronizadas (Responses)
 - Geração automática de documentação com Swagger
@@ -81,6 +83,15 @@ Subir o banco via docker-compose.yml:
 
 ```bash
 $ docker-compose up --build
+```
+
+Ao subir, verifique se esta rodando o Banco PostgreSql e o Redis para salvar o cacheamento:
+```bash
+#Containers rodando no momentos
+$ docker ps 
+
+#Docker images buildadas.
+$ docker images -a
 ```
 
 ### 4 - Rodar a Api
