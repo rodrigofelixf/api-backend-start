@@ -10,6 +10,8 @@ def prever_vulnerabilidade(dadosUsuario: schemas.CriarUsuario):
 
     dados = converter_para_paciente_request(dadosUsuario)
 
+    print(dados)
+
     dados_usuario = pd.DataFrame([dados.model_dump()])
 
 
