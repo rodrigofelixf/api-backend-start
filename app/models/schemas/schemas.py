@@ -1,7 +1,9 @@
-from pydantic import BaseModel
-from typing import Optional
 from datetime import date
+from typing import Optional
 
+from pydantic import field_validator
+from pydantic import BaseModel
+from pydantic.v1 import ConfigDict
 
 
 
@@ -33,15 +35,25 @@ class CriarUsuario(BaseModel):
     numeroMoradores: int
     grupo: str
 
+
+
 class Usuario(BaseModel):
     cpf: str
     nomeCompleto: str
     email: str
     isVulneravel: bool
 
-class Config:
-    orm_mode = True
+    # Validador para capitalizar o nome corretamente
+    @field_validator('nomeCompleto', mode='before')
+    def capitalizar_nome(cls, v):
+        if v:
+            return v.title()  # Capitaliza o nome
+        return v
 
+    # Atualize a configuração para o novo formato
+    model_config = ConfigDict(
+        from_attributes=True  # Substitui 'orm_mode'
+    )
 
 class VulnerabilidadeDadosTreino(BaseModel):
     nome: str
@@ -60,3 +72,5 @@ class VulnerabilidadeDadosTreino(BaseModel):
     uf: str
     cep: int
     n_moradores: int
+
+
