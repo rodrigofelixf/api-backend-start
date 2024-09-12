@@ -42,7 +42,7 @@ def registrar_usuario(usuario: schemas.CriarUsuario, db: Session = Depends(get_d
 
 
 @router.get(endpointUsuario, response_model=list[schemas.Usuario])
-@cache(expire=60)
+@cache(expire=1)
 async def mostrar_lista_usuarios(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
 
     usuarios = await usuario_service.obter_todos_usuarios(db, skip, limit)

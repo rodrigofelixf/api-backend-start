@@ -1,36 +1,23 @@
 import pandas as pd
 import joblib
-
+from sklearn.metrics import accuracy_score
 
 # Carregar o modelo treinado
 modelo = joblib.load('modelo_treinado.pkl')
 
-# Obter o pré-processador do pipeline
-preprocessor = modelo.named_steps['preprocessor']
+# Carregar e preparar os dados de teste
+# Exemplo com dados de teste, substitua 'data/test_data.csv' e ajuste as colunas conforme necessário
+dados_teste = pd.read_csv('data/base_tratada_refinada2.csv')
 
-# Obter os nomes das features transformadas
-numeric_feature_names = preprocessor.named_transformers_['num'].get_feature_names_out()
-categorical_feature_names = preprocessor.named_transformers_['cat'].get_feature_names_out()
+# Preparar os dados de teste
+X_teste = dados_teste.drop(columns=['vulnerabilidade_social'])
+y_teste = dados_teste['vulnerabilidade_social']
+X_teste = X_teste.drop(['nome', 'endereco', 'numero'], axis=1)
 
-# Unir todos os nomes das features
-feature_names = numeric_feature_names.tolist() + categorical_feature_names.tolist()
+# Fazer previsões com o modelo carregado
+previsoes = modelo.predict(X_teste)
 
-# Obter a importância das features
-importancias = modelo.named_steps['classifier'].feature_importances_
+# Avaliar a acurácia
+acuracia = accuracy_score(y_teste, previsoes)
 
-# Criar um DataFrame para visualizar
-importancia_df = pd.DataFrame({'Feature': feature_names, 'Importância': importancias})
-
-# Ordenar as features pela importância
-importancia_df = importancia_df.sort_values(by='Importância', ascending=False)
-
-# Exibir o DataFrame
-print(importancia_df)
-
-# # Opcional: Plotar a importância das features
-# plt.figure(figsize=(10, 6))
-# plt.barh(importancia_df['Feature'], importancia_df['Importância'])
-# plt.xlabel('Importância')
-# plt.ylabel('Feature')
-# plt.title('Importância das Features no Modelo de Random Forest')
-# plt.gca().invert_yaxis()
+print(f'Acurácia do modelo: {acuracia:.2f}')

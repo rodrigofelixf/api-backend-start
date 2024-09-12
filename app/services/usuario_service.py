@@ -44,8 +44,11 @@ async def obter_todos_usuarios(db: Session, skip: int = 0, limit: int = 100):
 
     logger.info("Cache Miss: Fetching data from database SERVICE@")
 
-
-    resultado = db.query(usuario_model.UsuarioModel).offset(skip).limit(limit).all()
+    resultado = db.query(usuario_model.UsuarioModel) \
+        .order_by(usuario_model.UsuarioModel.nomeCompleto) \
+        .offset(skip) \
+        .limit(limit) \
+        .all()
 
     # Log após a consulta
     logger.info("Data fetched from database and cached@SERVICE")
