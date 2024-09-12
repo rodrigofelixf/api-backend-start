@@ -52,7 +52,7 @@
 
   
   .btn-pessoa {
-    background-color: #ffffff;
+    background-color: #dbc29073;
     color: black;
     border: none;
     padding: 2rem;
@@ -101,16 +101,20 @@
 
   /* Estilos para Vulnerável */
 .vulneravel {
-    color: #e60e0e; /* Cor do texto */
-    background-color: aqua;
+    color: #CB2020;
+    
  
   }
   
   /* Estilos para Não Vulnerável */
   .nao-vulneravel {
-    color: #0cec17; /* Cor do texto */
+    color: #248529; /* Cor do texto */
     
   }
+
+  .vulneravel .div-vul{
+    background-color: #CB202033; /* Cor do background não vulnerável */
+}
   
 
     
