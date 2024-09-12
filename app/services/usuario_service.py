@@ -56,8 +56,16 @@ async def obter_todos_usuarios(db: Session, skip: int = 0, limit: int = 100):
 def criar_usuario(db: Session, usuario: schemas.CriarUsuario):
     is_vulneravel = prever_vulnerabilidade(usuario)
 
+    if is_vulneravel is None:
+        raise HTTPException(
+            status_code=400,
+            detail="Não foi possível cadastrar o usuário devido a um problema na previsão de vulnerabilidade. Entre em contato co o suporte. "
+        )
+
+
     usuario_dados = usuario.model_dump()
     usuario_dados['isVulneravel'] = is_vulneravel
+
 
     usuario_para_salvar = usuario_model.UsuarioModel(**usuario_dados)
 
