@@ -12,11 +12,15 @@ def prever_vulnerabilidade(dadosUsuario: schemas.CriarUsuario):
     try:
         dados = converter_para_paciente_request(dadosUsuario)
 
+        print(dados)
+
 
         dados_usuario = pd.DataFrame([dados.model_dump()])
 
 
         colunasRemovidas = remover_colunas_nao_treinadas(dados_usuario)
+
+        print(colunasRemovidas)
 
 
         previsao = modeloTreinadoRandomForest.predict(colunasRemovidas)
