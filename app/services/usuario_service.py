@@ -36,6 +36,10 @@ def obter_usuario_por_cpf(db: Session, usuario_cpf: str):
     usuario = db.query(usuario_model.UsuarioModel).filter(usuario_model.UsuarioModel.cpf == usuario_cpf).first()
     return usuario
 
+def obter_usuarios_pelo_cpf(db: Session, usuario_cpf: str):
+    usuario = db.query(usuario_model.UsuarioModel).filter(usuario_model.UsuarioModel.cpf.ilike(f"%{usuario_cpf}%")).all()
+    return usuario
+
 def obter_usuario_por_email(db: Session, usuario_email: str):
     usuario = db.query(usuario_model.UsuarioModel).filter(usuario_model.UsuarioModel.email == usuario_email).first()
     return usuario
