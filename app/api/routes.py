@@ -1,11 +1,10 @@
 import logging
-import time
+from io import StringIO
 
+import pandas as pd
+from fastapi import APIRouter, HTTPException, UploadFile
+from fastapi.params import Depends, File
 from fastapi_cache.decorator import cache
-from fastapi import APIRouter, HTTPException
-from fastapi.params import Depends
-from redis.asyncio import Redis
-
 from sqlalchemy.orm import Session
 
 from app.db.database import SessionLocal, engine
@@ -19,7 +18,10 @@ usuario_model.Base.metadata.create_all(bind=engine)
 router = APIRouter()
 endpointUsuario = "/usuarios/"
 
+
 logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
+
 
 
 def get_db():
@@ -81,10 +83,74 @@ def buscar_usuario_por_cpf(usuarioCpf: str, db: Session = Depends(get_db)):
     return usuarioEncontrado
 
 
-# @router.post("/prever/")
-# async def prever_vulnerabilidade_social(dados: PacienteRequest):
-#     resultado = prever_vulnerabilidade(dados)
-#     return resultado
+@router.post(endpointUsuario + "upload-csv/")
+async def carregar_arquivo_csv_cadastrar_usuarios(file: UploadFile = File(...), db: Session = Depends(get_db)):
+    if file.content_type != 'text/csv':
+        raise HTTPException(status_code=400, detail="O arquivo precisa ser um CSV.")
+
+    contents = await file.read()
+    csv_data = StringIO(contents.decode("utf-8"))
+    dataframe = pd.read_csv(csv_data)
+
+    required_columns = [
+        "nomeCompleto", "email", "cpf", "dataNascimento", "sexo", "rg", "idade", "nomeMae",
+        "telefone", "cep", "cidade", "rua", "uf", "bairro", "numeroEndereco", "escolaridade",
+        "racaCor", "faixaEtaria", "estadoCivil", "pcd", "tipoPcd", "cursoSuperior",
+        "renda", "emprego", "numeroMoradores", "grupo"
+    ]
+
+    if not all(col in dataframe.columns for col in required_columns):
+        raise HTTPException(status_code=400, detail="O CSV não contém todas as colunas necessárias.")
+
+    usuarios_criados = []
+    usuarios_existentes = set()
+
+    for _, row in dataframe.iterrows():
+        # Verificar se o e-mail já está cadastrado
+        if row["email"] in usuarios_existentes:
+            continue  # Pular este registro se o e-mail já foi processado
+
+        usuario_data = schemas.CriarUsuario(
+            nomeCompleto=row["nomeCompleto"],
+            email=row["email"],
+            cpf=row["cpf"],
+            dataNascimento=row["dataNascimento"],
+            sexo=row["sexo"],
+            rg=row.get("rg"),
+            idade=row["idade"],
+            nomeMae=row["nomeMae"],
+            telefone=row.get("telefone"),
+            cep=row["cep"],
+            cidade=row["cidade"],
+            rua=row["rua"],
+            uf=row["uf"],
+            bairro=row["bairro"],
+            numeroEndereco=row.get("numeroEndereco"),
+            escolaridade=row["escolaridade"],
+            racaCor=row["racaCor"],
+            faixaEtaria=row["faixaEtaria"],
+            estadoCivil=row["estadoCivil"],
+            pcd=row["pcd"],
+            tipoPcd=row.get("tipoPcd"),
+            cursoSuperior=row.get("cursoSuperior"),
+            renda=row["renda"],
+            emprego=row.get("emprego"),
+            numeroMoradores=row["numeroMoradores"],
+            grupo=row["grupo"]
+        )
+
+        try:
+            usuario_service.validar_usuario_existe(db, usuario_data.cpf, usuario_data.email)
+            usuario_criado = usuario_service.criar_usuario(db, usuario_data)
+            usuarios_criados.append(usuario_criado)
+            usuarios_existentes.add(usuario_data.email)  # Adiciona o e-mail à lista de processados
+        except HTTPException as e:
+            logger.error(f"Erro ao criar usuário com email {usuario_data.email}: {e.detail}")
+            continue  # Ignora o erro e continua com o próximo usuário
+
+    return {"message": f"{len(usuarios_criados)} usuários foram criados com sucesso!"}
+
+
 
 
 
