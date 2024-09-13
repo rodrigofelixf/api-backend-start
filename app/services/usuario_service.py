@@ -27,7 +27,9 @@ def obter_usuario_por_nome(db: Session, usuario_nome: str):
     return usuario
 
 def obter_usuarios_pelo_nome(db: Session, usuario_nome: str):
-    usuario = db.query(usuario_model.UsuarioModel).filter(usuario_model.UsuarioModel.nomeCompleto.ilike(f"%{usuario_nome}")).all()
+    print(f"Procurando por usuários com o nome: {usuario_nome}")
+    usuario = db.query(usuario_model.UsuarioModel).filter(usuario_model.UsuarioModel.nomeCompleto.ilike(f"%{usuario_nome}%")).all()
+    print(f"Usuários encontrados: {usuario}")
     return usuario
 
 def obter_usuario_por_cpf(db: Session, usuario_cpf: str):
