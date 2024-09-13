@@ -64,21 +64,24 @@ def criar_usuario(db: Session, usuario: schemas.CriarUsuario):
     if is_vulneravel is None:
         raise HTTPException(
             status_code=400,
-            detail="Não foi possível cadastrar o usuário devido a um problema na previsão de vulnerabilidade. Entre em contato co o suporte. "
+            detail="Não foi possível cadastrar o usuário devido a um problema na previsão de vulnerabilidade. Entre em contato com o suporte."
         )
 
-
+    # Converte o usuário para dicionário e garante que 'cep' seja uma string
     usuario_dados = usuario.model_dump()
+    usuario_dados['cep'] = str(usuario_dados.get('cep', ''))  # Garante que 'cep' seja string
     usuario_dados['isVulneravel'] = is_vulneravel
 
-
+    # Cria uma instância do modelo SQLAlchemy
     usuario_para_salvar = usuario_model.UsuarioModel(**usuario_dados)
 
+    # Adiciona e salva no banco de dados
     db.add(usuario_para_salvar)
     db.commit()
     db.refresh(usuario_para_salvar)
 
     return usuario_para_salvar
+
 
 
 

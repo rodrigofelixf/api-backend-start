@@ -17,7 +17,7 @@ class CriarUsuario(BaseModel):
     idade: int
     nomeMae: str
     telefone: Optional[str] = None
-    cep: int
+    cep: str
     cidade: str
     rua: str
     uf: str
@@ -70,7 +70,7 @@ class VulnerabilidadeDadosTreino(BaseModel):
     bairro: str
     cidade: str
     uf: str
-    cep: int
+    cep: str
     n_moradores: int
 
 

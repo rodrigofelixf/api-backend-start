@@ -16,7 +16,7 @@ class UsuarioModel(Base):
     idade = Column(Integer, nullable=False)
     nomeMae = Column(String, nullable=False)
     telefone = Column(String, nullable=True)
-    cep = Column(Integer, nullable=False)
+    cep = Column(String, nullable=False)
     cidade = Column(String, nullable=False)  # Enum para o campo cidade
     rua = Column(String, nullable=False)
     uf = Column(String, nullable=False)
