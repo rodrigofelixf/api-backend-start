@@ -163,6 +163,22 @@ async def carregar_arquivo_csv_cadastrar_usuarios(file: UploadFile = File(...), 
     return {"message": f"{len(usuarios_criados)} usuários foram criados com sucesso!"}
 
 
+@router.get(endpointUsuario + "filtro/vulneraveis", response_model=list[schemas.Usuario])
+def buscar_usuarios_vulneraveis(db: Session = Depends(get_db)):
+    usuarios_vulneraveis = usuario_service.obter_usuarios_vulneraveis(db)
+    if not usuarios_vulneraveis:
+        raise HTTPException(status_code=404, detail="Nenhum usuário vulnerável encontrado")
+    return usuarios_vulneraveis
+
+
+@router.get(endpointUsuario + "filtro/nao-vulneraveis", response_model=list[schemas.Usuario])
+def buscar_usuarios_nao_vulneraveis(db: Session = Depends(get_db)):
+    usuarios_nao_vulneraveis = usuario_service.obter_usuarios_nao_vulneraveis(db)
+    if not usuarios_nao_vulneraveis:
+        raise HTTPException(status_code=404, detail="Nenhum usuário não vulnerável encontrado")
+    return usuarios_nao_vulneraveis
+
+
 
 
 

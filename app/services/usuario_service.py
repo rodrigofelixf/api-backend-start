@@ -88,6 +88,15 @@ def criar_usuario(db: Session, usuario: schemas.CriarUsuario):
 
 
 
+def obter_usuarios_vulneraveis(db: Session):
+    return db.query(usuario_model.UsuarioModel).filter(usuario_model.UsuarioModel.isVulneravel == True).all()
+
+def obter_usuarios_nao_vulneraveis(db: Session):
+    return db.query(usuario_model.UsuarioModel).filter(usuario_model.UsuarioModel.isVulneravel == False).all()
+
+
+
+
 
 def validar_usuario_existe(db: Session, cpf: str, email: str):
     if obter_usuario_por_cpf(db, cpf):
